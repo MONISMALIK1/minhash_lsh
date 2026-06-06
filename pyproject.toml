@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minhash_lsh"
+version = "0.1.0"
+description = "Near-duplicate detection from scratch: MinHash (Broder 1997) + LSH banding (Indyk-Motwani 1998). Deduplicate corpora without O(n^2). Zero deps."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = []   # zero third-party deps — pure stdlib
+
+[project.scripts]
+minhash_lsh = "minhash_lsh.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["minhash_lsh*"]
+
+[tool.setuptools.package-data]
+minhash_lsh = ["py.typed"]
