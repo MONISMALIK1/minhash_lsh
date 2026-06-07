@@ -69,6 +69,10 @@ for doc_id, text in corpus:
 d.duplicate_pairs()   # [DupPair(a, b, similarity), ...]  (verified ≥ threshold)
 d.clusters()          # connected components of the near-dup graph
 d.unique_keys()       # one representative per cluster — the deduplicated set
+
+d.add_many(corpus)            # bulk-load (key, text) pairs
+d.query("an incoming doc")    # [(key, similarity), ...] near-dupes of an UNSEEN doc
+                              #   (screens against the index without inserting it)
 ```
 
 It pairs naturally with the RAG repos
