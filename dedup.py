@@ -53,6 +53,28 @@ class MinHashDeduper:
         self._sigs[key] = sig
         self.index.add(key, sig)
 
+    def add_many(self, items) -> "MinHashDeduper":
+        """Add an iterable of ``(key, text)`` pairs in bulk. Returns self."""
+        for key, text in items:
+            self.add(key, text)
+        return self
+
+    def query(self, text: str) -> list[tuple]:
+        """Near-duplicates of an *unseen* document among the indexed ones.
+
+        Computes the query's signature, pulls LSH candidates, and returns the
+        verified matches as ``(key, similarity)`` pairs — **without** adding the
+        document to the index (handy for screening incoming docs against a corpus).
+        """
+        sig = self.hasher.signature(shingles(text, k=self.k, char=self.char))
+        out = []
+        for cand in self.index.candidates(sig):
+            sim = jaccard(sig, self._sigs[cand])
+            if sim >= self.threshold:
+                out.append((cand, round(sim, 4)))
+        out.sort(key=lambda t: (-t[1], _key(t[0])))
+        return out
+
     def __len__(self) -> int:
         return len(self._sigs)
 

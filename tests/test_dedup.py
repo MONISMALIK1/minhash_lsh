@@ -19,6 +19,28 @@ class DedupTests(unittest.TestCase):
         found = {tuple(sorted((p.a, p.b))) for p in pairs}
         self.assertIn(("a", "b"), found)
 
+    def test_add_many_bulk_load(self):
+        d = MinHashDeduper(threshold=0.5, num_perm=128, k=3, seed=1)
+        ret = d.add_many([
+            ("a", "the quick brown fox jumps over the lazy dog"),
+            ("b", "the quick brown fox jumps over the lazy cat"),
+        ])
+        self.assertIs(ret, d)  # chainable
+        self.assertEqual(len(d), 2)
+        found = {tuple(sorted((p.a, p.b))) for p in d.duplicate_pairs()}
+        self.assertEqual(found, {("a", "b")})
+
+    def test_query_finds_matches_without_adding(self):
+        d = self._deduper()
+        matches = d.query("the quick brown fox jumps over the lazy dog")
+        keys = {k for k, _ in matches}
+        self.assertTrue({"a", "b"} & keys)   # matches the fox docs
+        self.assertEqual(len(d), 3)           # query did NOT add the document
+
+    def test_query_unrelated_returns_nothing(self):
+        d = self._deduper()
+        self.assertEqual(d.query("quantum field theory lagrangian densities"), [])
+
     def test_does_not_flag_unrelated_doc(self):
         pairs = self._deduper().duplicate_pairs()
         keys_in_pairs = {p.a for p in pairs} | {p.b for p in pairs}
