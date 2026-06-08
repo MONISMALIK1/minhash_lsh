@@ -113,6 +113,18 @@ as a near-duplicate, leaves an unrelated doc alone, clusters, and reduces the se
 - **Signature cost** is `O(shingles × num_perm)` per document (pure Python, no
   vectorization); fine for large corpora, not tuned for billions of docs.
 
+## Part of a series
+
+From-scratch, dependency-free implementations of foundational algorithms & papers:
+**probabilistic data structures** —
+**minhash_lsh** (this repo, near-duplicate detection) ·
+[hyperloglog](https://github.com/MONISMALIK1/hyperloglog) (distinct counting); and
+**LLM-reasoning / RAG** —
+[self_rag](https://github.com/MONISMALIK1/self_rag) ·
+[corrective_rag](https://github.com/MONISMALIK1/corrective_rag) ·
+[hyde](https://github.com/MONISMALIK1/hyde) ·
+[chain_of_verification](https://github.com/MONISMALIK1/chain_of_verification).
+
 ## License
 
 MIT
