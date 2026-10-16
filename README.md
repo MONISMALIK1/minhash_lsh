@@ -97,7 +97,7 @@ unit-tested offline.
 make test        # or: python -m unittest discover -s minhash_lsh/tests -t . -v
 ```
 
-28 tests: shingling, MinHash accuracy against **known Jaccard values**, LSH band
+31 tests: shingling, MinHash accuracy against **known Jaccard values**, LSH band
 collisions and threshold selection, and end-to-end dedup (it flags a one-word edit
 as a near-duplicate, leaves an unrelated doc alone, clusters, and reduces the set).
 
